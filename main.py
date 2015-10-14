@@ -17,9 +17,9 @@ for filepath in filepathops.each_object_in_directory_recursively(selections['sou
 	relativepath = os.path.relpath(filepath, selections['source_path'])
 	print(relativepath)
 	config_file = config_file_parser.create_dictionary_from_file(filepath)
-	if 'dictionary' in config_file or 'profiles' in config_file:
-		config_file['file'] = relativepath
-		comparison_object['config_files'].append(config_file)
+	#if 'dictionary' in config_file or 'profiles' in config_file:
+	config_file['file'] = relativepath
+	comparison_object['config_files'].append(config_file)
 
 i_tables.get_i_table_data(comparison_object)
 

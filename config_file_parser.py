@@ -90,8 +90,8 @@ def create_dictionary_from_configuration_lines(lines):
 	dictionary = {}
 	profile = ''
 	def add_profile_to_config_dictionary():
-		if dictionary == {}:
-			return
+		#if dictionary == {}:
+		#	return
 		if profile == '':
 			config_dictionary['dictionary'] = dictionary
 		else:
