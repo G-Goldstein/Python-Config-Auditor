@@ -1,26 +1,31 @@
 import filepathops
 import json
 import config_file_parser
-import run_selection
 import os
 import output
 import i_tables
+import timestamp
+import run_selection
 
-selections = run_selection.get_selections()
+run_time = timestamp.time_string()
+configured_environments = run_selection.configured_environments()
 
-save_file_name = os.path.basename(selections['save_file'])
-(environment, _) = os.path.splitext(save_file_name)
+for environment in configured_environments:
 
-comparison_object = {'environment':environment, 'config_files':[], 'database_tables':{}}
+	print('{!s} at {!s}'.format(environment, configured_environments[environment]))
 
-for filepath in filepathops.each_object_in_directory_recursively(selections['source_path'], config_file_parser.is_config_file, config_file_parser.is_not_excluded_directory):
-	relativepath = os.path.relpath(filepath, selections['source_path'])
-	print(relativepath)
-	config_file = config_file_parser.create_dictionary_from_file(filepath)
-	#if 'dictionary' in config_file or 'profiles' in config_file:
-	config_file['file'] = relativepath
-	comparison_object['config_files'].append(config_file)
+	source_path = configured_environments[environment]
+	save_file = '../data/{!s}_{!s}.json'.format(run_time, environment)
+	overview = {'Environment':environment, 'Date':timestamp.current_date(), 'Time':timestamp.current_time()}
+	comparison_object = {'overview':overview, 'config_files':[], 'database_tables':{}}
 
-i_tables.get_i_table_data(comparison_object)
+	for filepath in filepathops.each_object_in_directory_recursively(source_path, config_file_parser.is_config_file, config_file_parser.is_not_excluded_directory):
+		relativepath = os.path.relpath(filepath, source_path)
+		print(relativepath)
+		config_file = config_file_parser.create_dictionary_from_file(filepath)
+		config_file['file'] = relativepath
+		comparison_object['config_files'].append(config_file)
 
-output.write_out_json(comparison_object, selections['save_file'])
+	i_tables.get_i_table_data(comparison_object)
+
+	output.write_out_json(comparison_object, save_file)

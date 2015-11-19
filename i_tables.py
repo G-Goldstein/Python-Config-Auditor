@@ -19,9 +19,16 @@ def _header_descriptions(odbc, table, library):
 			yield column
 
 def _table_information(odbc, table, lib):
+	def numbers_with_commas(n):
+		arr = []
+		for m in range(1, n):
+			arr.append(str(m))
+		return ', '.join(arr)
+
 	info = {}
 	info['headers'] = []
 	info['rows'] = []
+	info['title'] = table
 
 	for header in _header_descriptions(odbc, table, lib):
 		try:
@@ -31,7 +38,8 @@ def _table_information(odbc, table, lib):
 		info['headers'].append(header)
 
 	info['rows'] = []
-	for row in odbc.connection.cursor().execute("SELECT * from {!s}".format(table)):
+	sqlstring = "SELECT * from {!s} order by {!s}".format(table, numbers_with_commas(len(info['headers'])))
+	for row in odbc.connection.cursor().execute(sqlstring):
 		row_builder = []
 		for column in row:
 			try:
@@ -43,7 +51,7 @@ def _table_information(odbc, table, lib):
 			except:
 				pass
 			row_builder.append(column)
-		info['rows'].append('{!s}'.format(row_builder))
+		info['rows'].append(row_builder)
 
 	return info
 
