@@ -1,82 +1,82 @@
 import os
-# import unittest
-# from unittest.mock import MagicMock
+import unittest
+from unittest.mock import MagicMock
 
-# class config_file_parser_test(unittest.TestCase):
+class config_file_parser_test(unittest.TestCase):
 
-# 	def setUp(self):
-# 		pass
+	def setUp(self):
+		pass
 
-# 	def test_create_dictionary_from_configuration_contents(self):
-# 		file_contents = "colour=red|shape=rectangle|size=large".replace('|', os.linesep)
-# 		expected_dictionary = {
-# 			'dictionary':{
-# 				'colour':'red',
-# 				'shape':'rectangle',
-# 				'size':'large'
-# 			}
-# 		}
-# 		file_content_lines = split_text_lines(file_contents)
-# 		self.assertEqual(create_dictionary_from_configuration_lines(file_content_lines),expected_dictionary)
+	def test_create_dictionary_from_configuration_contents(self):
+		file_contents = "colour=red|shape=rectangle|size=large".replace('|', os.linesep)
+		expected_dictionary = {
+			'dictionary':{
+				'colour':'red',
+				'shape':'rectangle',
+				'size':'large'
+			}
+		}
+		file_content_lines = split_text_lines(file_contents)
+		self.assertEqual(create_dictionary_from_configuration_lines(file_content_lines),expected_dictionary)
 
-# 	def test_create_dictionary_from_configuration_contents_with_profiles(self):
-# 		self.maxDiff = None
-# 		file_contents = "[Default]|colour=red|shape=rectangle|size=large|[Special User]|colour=blue".replace('|', os.linesep)
-# 		expected_dictionary = {
-# 			'profiles':[
-# 				{
-# 					'profile':'[Default]',
-# 					'dictionary':{
-# 						'colour':'red',
-# 						'shape':'rectangle',
-# 						'size':'large'
-# 					}
-# 				},
-# 				{
-# 					'profile':'[Special User]',
-# 					'dictionary':{
-# 						'colour':'blue'
-# 					}
-# 				}
-# 			]
-# 		}
-# 		file_content_lines = split_text_lines(file_contents)
-# 		self.assertEqual(create_dictionary_from_configuration_lines(file_content_lines),expected_dictionary)
+	def test_create_dictionary_from_configuration_contents_with_profiles(self):
+		self.maxDiff = None
+		file_contents = "[Default]|colour=red|shape=rectangle|size=large|[Special User]|colour=blue".replace('|', os.linesep)
+		expected_dictionary = {
+			'profiles':[
+				{
+					'profile':'[Default]',
+					'dictionary':{
+						'colour':'red',
+						'shape':'rectangle',
+						'size':'large'
+					}
+				},
+				{
+					'profile':'[Special User]',
+					'dictionary':{
+						'colour':'blue'
+					}
+				}
+			]
+		}
+		file_content_lines = split_text_lines(file_contents)
+		self.assertEqual(create_dictionary_from_configuration_lines(file_content_lines),expected_dictionary)
 
-# 	def test_create_dictionary_from_configuration_contents_with_mix_of_profiles_and_default(self):
-# 		self.maxDiff = None
-# 		file_contents = "colour=red|shape=rectangle|size=large|[Special User]|colour=blue".replace('|', os.linesep)
-# 		expected_dictionary = {
-# 			'dictionary':{
-# 				'colour':'red',
-# 				'shape':'rectangle',
-# 				'size':'large'
-# 			},
-# 			'profiles':[
-# 				{
-# 					'profile':'[Special User]',
-# 					'dictionary':{
-# 						'colour':'blue'
-# 					}
-# 				}
-# 			]
-# 		}
-# 		file_content_lines = split_text_lines(file_contents)
-# 		self.assertEqual(create_dictionary_from_configuration_lines(file_content_lines),expected_dictionary)	
+	def test_create_dictionary_from_configuration_contents_with_mix_of_profiles_and_default(self):
+		self.maxDiff = None
+		file_contents = "colour=red|shape=rectangle|size=large|[Special User]|colour=blue".replace('|', os.linesep)
+		expected_dictionary = {
+			'dictionary':{
+				'colour':'red',
+				'shape':'rectangle',
+				'size':'large'
+			},
+			'profiles':[
+				{
+					'profile':'[Special User]',
+					'dictionary':{
+						'colour':'blue'
+					}
+				}
+			]
+		}
+		file_content_lines = split_text_lines(file_contents)
+		self.assertEqual(create_dictionary_from_configuration_lines(file_content_lines),expected_dictionary)	
 
-# 	def test_line_is_profile(self):
-# 		self.assertTrue(line_is_profile('[Default]'))
-# 		self.assertFalse(line_is_profile('path=fhsh/[fhshs]'))
-# 		self.assertFalse(line_is_profile('[hello'))
-# 		self.assertFalse(line_is_profile('hello]'))
+	def test_line_is_profile(self):
+		self.assertTrue(line_is_profile('[Default]'))
+		self.assertFalse(line_is_profile('path=fhsh/[fhshs]'))
+		self.assertFalse(line_is_profile('[hello'))
+		self.assertFalse(line_is_profile('hello]'))
 
-# 	def test_is_config_file(self):
-# 		self.assertTrue(is_config_file('config.ini'))
-# 		self.assertTrue(is_config_file('config.properties'))
-# 		self.assertTrue(is_config_file('config.pref'))
-# 		self.assertFalse(is_config_file('config.xlsx'))
-# 		self.assertFalse(is_config_file('config'))
-# 		self.assertFalse(is_config_file('configini'))
+	def test_is_config_file(self):
+		self.assertTrue(is_config_file('config.ini'))
+		self.assertTrue(is_config_file('config.properties'))
+		self.assertTrue(is_config_file('config.pref'))
+		self.assertFalse(is_config_file('config.xlsx'))
+		self.assertFalse(is_config_file('config'))
+		self.assertFalse(is_config_file('configini'))
 
 def split_text_lines(text):
 	lines = text.split(sep='\n')
