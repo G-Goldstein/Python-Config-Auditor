@@ -40,5 +40,6 @@ if __name__ == "__main__":
 		save_directory = sys.argv[3]
 	except:
 		print('Bad parameters passed')
+		sys.exit()
 	else:
 		collect_audit_for_environment(environment, source_path, save_directory)
