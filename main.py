@@ -24,7 +24,7 @@ def collect_audit_for_environment(environment, source_ip, source_shared_director
 			config_file['file'] = filepath
 			comparison_object['config_files'].append(config_file)
 
-	i_tables.get_i_table_data(comparison_object)
+	#i_tables.get_i_table_data(comparison_object)
 
 	with smb_connector(save_ip, save_shared_directory, 'vmadmin', 'Password100') as save_connection:
 		save_connection.write_file(save_file_path, json.dumps(comparison_object, sort_keys=True, indent=4, separators=(',', ': ')))
