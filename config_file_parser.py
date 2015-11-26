@@ -113,8 +113,8 @@ def create_dictionary_from_configuration_lines(lines):
 	add_profile_to_config_dictionary()
 	return config_dictionary
 
-def create_dictionary_from_file(file):
-	return create_dictionary_from_configuration_lines(split_text_lines(file_contents(file)))
+def create_dictionary_from_file_contents(file_contents):
+	return create_dictionary_from_configuration_lines(split_text_lines(file_contents))
 
 def file_contents(filepath):
 	with open(filepath, 'r') as file:
