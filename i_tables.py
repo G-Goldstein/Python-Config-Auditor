@@ -58,11 +58,10 @@ def _table_information(odbc, table, lib):
 
 def get_i_table_data(comparison_object):
 
-
 	i_connection_settings = {}
 
 	for config_file in comparison_object['config_files']:
-		if config_file['file'] == 'Envs\site.properties':
+		if config_file['file'].endswith('Config\Envs\site.properties'):
 			for property in odbc_connection.i_connection_properties_required:
 				if property in config_file['dictionary']:
 					i_connection_settings[property] = config_file['dictionary'][property]
