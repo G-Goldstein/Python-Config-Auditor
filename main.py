@@ -61,6 +61,6 @@ if __name__ == "__main__":
 	except:
 		print('Bad parameters passed')
 		sys.exit()
-	set_globals()
 	else:
+		set_globals()
 		collect_audit_for_environment(environment, source_ip, source_shared_directory, source_path, source_username, source_password)
