@@ -22,6 +22,7 @@ def set_globals():
 			globals[variable] = os.environ[variable]
 		except:
 			raise Exception('Environment variable {!s} not defined'.format(variable))
+	print(globals)
 
 def collect_audit_for_environment(environment, source_ip, source_shared_directory, source_path, source_username, source_password):
 	print('{!s} at {!s}'.format(environment, source_path))
