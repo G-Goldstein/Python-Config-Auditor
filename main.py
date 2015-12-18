@@ -8,12 +8,27 @@ import timestamp
 import run_selection
 import sys
 
-def collect_audit_for_environment(environment, source_ip, source_shared_directory, source_path, source_username, source_password, save_ip, save_shared_directory, save_path, save_username, save_password):
+globals = {}
+global_variables = ['audit_machine_ip',
+					'audit_machine_shared_directory',
+					'audit_machine_save_path',
+					'audit_machine_username',
+					'audit_machine_password']
+
+
+def set_globals():
+	for variable in global_variables:
+		if variable in os.environ:
+			globals[variable] = os.environ[variable]
+		else:
+			raise Exception('Environment variable {!s} not defined'.format(variable))
+
+def collect_audit_for_environment(environment, source_ip, source_shared_directory, source_path, source_username, source_password):
 	print('{!s} at {!s}'.format(environment, source_path))
 	run_time = timestamp.time_string()
 
 	save_file_name = '{!s}_{!s}.json'.format(run_time, environment)
-	save_file_path = os.path.join(save_path, save_file_name)
+	save_file_path = os.path.join(globals['audit_machine_save_path'], save_file_name)
 	overview = {'Environment':environment, 'Date':timestamp.current_date(), 'Time':timestamp.current_time()}
 	comparison_object = {'overview':overview, 'config_files':[], 'database_tables':{}}
 
@@ -26,7 +41,7 @@ def collect_audit_for_environment(environment, source_ip, source_shared_director
 
 	i_tables.get_i_table_data(comparison_object)
 
-	with smb_connector(save_ip, save_shared_directory, save_username, save_password) as save_connection:
+	with smb_connector(globals['audit_machine_ip'], globals['audit_machine_shared_directory'], globals['audit_machine_username'], globals['audit_machine_password']) as save_connection:
 		save_connection.write_file(save_file_path, json.dumps(comparison_object, sort_keys=True, indent=4, separators=(',', ': ')))
 
 def collect_audit_for_all_environments(save_directory):
@@ -43,13 +58,8 @@ if __name__ == "__main__":
 		source_path = sys.argv[4]
 		source_username = sys.argv[5]
 		source_password = sys.argv[6]
-		save_ip = sys.argv[7]
-		save_shared_directory = sys.argv[8]
-		save_path = sys.argv[9]
-		save_username = sys.argv[10]
-		save_password = sys.argv[11]
 	except:
 		print('Bad parameters passed')
 		sys.exit()
 	else:
-		collect_audit_for_environment(environment, source_ip, source_shared_directory, source_path, source_username, source_password, save_ip, save_shared_directory, save_path, save_username, save_password)
+		collect_audit_for_environment(environment, source_ip, source_shared_directory, source_path, source_username, source_password)
