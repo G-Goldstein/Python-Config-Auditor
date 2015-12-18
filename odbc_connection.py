@@ -19,6 +19,7 @@ class odbc_connect:
 		self.connection_string="DSN=DB2DSN;ssl=1;System={!s};Uid={!s};Pwd={!s};DefaultLibraries={!s};ConnectionType=2".format(self.ip, self.user, args['iseries.password'], self.libl)
 
 	def __enter__(self):
+		print(self.connection_string)
 		self.connection = pyodbc.connect(self.connection_string, autocommit=True)
 		print('Connected to the i at {!s} as {!s}'.format(self.ip, self.user))
 		print('Using library list: {!s}'.format(self.libl))
