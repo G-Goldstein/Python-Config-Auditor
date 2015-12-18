@@ -18,9 +18,9 @@ global_variables = ['audit_machine_ip',
 
 def set_globals():
 	for variable in global_variables:
-		if variable in os.environ:
+		try:
 			globals[variable] = os.environ[variable]
-		else:
+		except:
 			raise Exception('Environment variable {!s} not defined'.format(variable))
 
 def collect_audit_for_environment(environment, source_ip, source_shared_directory, source_path, source_username, source_password):
