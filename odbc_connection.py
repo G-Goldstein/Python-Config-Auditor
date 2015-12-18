@@ -16,7 +16,7 @@ class odbc_connect:
 		self.user = args['iseries.username']
 		self.libl = args['iseries.librarylist']
 		self.libarray = self.libl.split(',')
-		self.connection_string="Driver={{iSeries Access ODBC Driver}};System={!s};Uid={!s};Pwd={!s};DefaultLibraries={!s};ConnectionType=2".format(self.ip, self.user, args['iseries.password'], self.libl)
+		self.connection_string="Driver={{IBM i Access ODBC Driver 64-bit}};ssl=1;System={!s};Uid={!s};Pwd={!s};DefaultLibraries={!s};ConnectionType=2".format(self.ip, self.user, args['iseries.password'], self.libl)
 
 	def __enter__(self):
 		self.connection = pyodbc.connect(self.connection_string, autocommit=True)
