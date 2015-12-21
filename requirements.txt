@@ -1,4 +1,5 @@
 pyasn1==0.1.9
 pyodbc==3.0.10
 pysmb==1.1.17
-requests==2.8.1
+requests==2.9.0
+wheel==0.24.0
