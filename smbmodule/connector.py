@@ -21,7 +21,7 @@ class smb_connector:
 		with tempfile.NamedTemporaryFile() as file_obj:
 			self.connection.retrieveFile(self.shared_directory, path, file_obj)
 			file_obj.seek(0)
-			content = file_obj.read().decode('utf-8')
+			content = file_obj.read().decode('utf-8', 'replace')
 		return content
 
 	def all_files_recursively(self, path, file_filter, directory_filter):
