@@ -24,16 +24,16 @@ class smb_connector:
 			content = file_obj.read().decode('utf-8', 'replace')
 		return content
 
-	def all_files_recursively(self, path, file_filter, directory_filter):
+	def all_files_recursively(self, full_path, file_filter, directory_filter, relative_path='/'):
 		whats_here = self.connection.listPath(self.shared_directory, path)
 		for file in whats_here:
 			file_path = os.path.join(path, file.filename)
+			file_relative_path = os.path.join(relative_path, file.filename)
 			if file.isDirectory:
 				if directory_filter(file.filename) and '.' not in file.filename:
-					for child_file_path in self.all_files_recursively(file_path, file_filter, directory_filter):
-						yield child_file_path
+					yield from self.all_files_recursively(file_path, file_filter, directory_filter, file_relative_path):
 			elif file_filter(file.filename):
-				yield file_path
+				yield file_relative_path
 
 	def write_file(self, path, contents):
 		with tempfile.NamedTemporaryFile() as file_obj:
