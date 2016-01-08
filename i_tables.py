@@ -61,10 +61,12 @@ def get_i_table_data(comparison_object):
 	i_connection_settings = {}
 
 	for config_file in comparison_object['config_files']:
-		if config_file['file'].endswith('site.properties'):
+		if config_file['file'].endswith('.properties'):
 			for property in odbc_connection.i_connection_properties_required:
 				if property in config_file['dictionary']:
 					i_connection_settings[property] = config_file['dictionary'][property]
+				else:
+					break
 
 	with odbc_connect(i_connection_settings) as odbc:
 		for table in tables_to_retrieve:

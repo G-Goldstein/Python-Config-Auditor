@@ -1,7 +1,7 @@
 import pyodbc
 import os
 
-i_connection_properties_required = ['iseries.username', 'iseries.password', 'iseries.connection', 'iseries.librarylist']
+i_connection_properties_required = ['iseries.username', 'iseries.password', 'iseries.middleware', 'iseries.librarylist']
 
 def _trim_ip(ip):
 	clean_ip = ip.strip('#')
@@ -13,7 +13,7 @@ class odbc_connect:
 		for required_property in i_connection_properties_required:
 			if required_property not in args:
 				raise AttributeError('required property {!s} not provided to odbc connection'.format(required_property))
-		self.ip = _trim_ip(args['iseries.connection'])
+		self.ip = _trim_ip(args['iseries.middleware'])
 		self.user = args['iseries.username']
 		self.libl = args['iseries.librarylist']
 		self.libarray = self.libl.split(',')
