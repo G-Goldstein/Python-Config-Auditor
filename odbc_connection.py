@@ -20,8 +20,10 @@ class odbc_connect:
 		self.connection_string="DSN={!s};System={!s};Uid={!s};Pwd={!s};DefaultLibraries={!s};ConnectionType=2".format(os.environ['dsn'], self.ip, self.user, args['iseries.password'], self.libl)
 
 	def __enter__(self):
-		print(self.connection_string)
-		self.connection = pyodbc.connect(self.connection_string, autocommit=True)
+		try:
+			self.connection = pyodbc.connect(self.connection_string, autocommit=True)
+		except:
+			raise ValueError('Couldn\'t connect to the i using the following connection string: {!s}'.format(self.connection_string))
 		print('Connected to the i at {!s} as {!s}'.format(self.ip, self.user))
 		print('Using library list: {!s}'.format(self.libl))
 		return self
