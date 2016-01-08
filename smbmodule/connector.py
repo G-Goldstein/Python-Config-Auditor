@@ -24,14 +24,14 @@ class smb_connector:
 			content = file_obj.read().decode('utf-8', 'replace')
 		return content
 
-	def all_files_recursively(self, full_path, file_filter, directory_filter, relative_path='/'):
-		whats_here = self.connection.listPath(self.shared_directory, path)
+	def all_files_recursively(self, full_path, file_filter, directory_filter, relative_path=''):
+		whats_here = self.connection.listPath(self.shared_directory, full_path)
 		for file in whats_here:
-			file_path = os.path.join(path, file.filename)
+			file_path = os.path.join(full_path, file.filename)
 			file_relative_path = os.path.join(relative_path, file.filename)
 			if file.isDirectory:
 				if directory_filter(file.filename) and '.' not in file.filename:
-					yield from self.all_files_recursively(file_path, file_filter, directory_filter, file_relative_path):
+					yield from self.all_files_recursively(file_path, file_filter, directory_filter, file_relative_path)
 			elif file_filter(file.filename):
 				yield file_relative_path
 

@@ -2,6 +2,7 @@ import pyodbc
 import os
 
 i_connection_properties_required = ['iseries.username', 'iseries.password', 'iseries.middleware', 'iseries.librarylist']
+#i_connection_properties_required = ['iseries.username', 'iseries.password', 'iseries.connection', 'iseries.librarylist']
 
 def _trim_ip(ip):
 	clean_ip = ip.strip('#')

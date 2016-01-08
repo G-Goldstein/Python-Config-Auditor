@@ -65,7 +65,9 @@ def get_i_table_data(comparison_object):
 			for property in odbc_connection.i_connection_properties_required:
 				if property in config_file['dictionary']:
 					i_connection_settings[property] = config_file['dictionary'][property]
+					print('Found i connection settings in {!s}'.format(config_file['file']))
 				else:
+					print('Didn\'t find i connection settings in {!s}'.format(config_file['file']))
 					break
 
 	with odbc_connect(i_connection_settings) as odbc:

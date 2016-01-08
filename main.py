@@ -35,7 +35,8 @@ def collect_audit_for_environment(environment, source_ip, source_shared_director
 	with smb_connector(source_ip, source_shared_directory, source_username, source_password) as source_connection:
 		for filepath in source_connection.all_files_recursively(source_path, config_file_parser.is_config_file, config_file_parser.is_not_excluded_directory):
 			print(filepath)
-			config_file = config_file_parser.create_dictionary_from_file_contents(source_connection.file_contents(filepath))
+			full_path = os.path.join(source_path, filepath)
+			config_file = config_file_parser.create_dictionary_from_file_contents(source_connection.file_contents(full_path))
 			config_file['file'] = filepath
 			comparison_object['config_files'].append(config_file)
 
