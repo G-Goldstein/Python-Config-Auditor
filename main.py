@@ -40,7 +40,10 @@ def collect_audit_for_environment(environment, source_ip, source_shared_director
 			config_file['file'] = filepath
 			comparison_object['config_files'].append(config_file)
 
-	i_tables.get_i_table_data(comparison_object)
+	try:
+		i_tables.get_i_table_data(comparison_object)
+	except:
+		print('Could not find connection settings for i')
 
 	with smb_connector(globals['audit_machine_ip'], globals['audit_machine_shared_directory'], globals['audit_machine_username'], globals['audit_machine_password']) as save_connection:
 		save_connection.write_file(save_file_path, json.dumps(comparison_object, sort_keys=True, indent=4, separators=(',', ': ')))
