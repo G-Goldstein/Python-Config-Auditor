@@ -45,6 +45,8 @@ def collect_audit_for_environment(environment, source_ip, source_shared_director
 	with smb_connector(globals['audit_machine_ip'], globals['audit_machine_shared_directory'], globals['audit_machine_username'], globals['audit_machine_password']) as save_connection:
 		save_connection.write_file(save_file_path, json.dumps(comparison_object, sort_keys=True, indent=4, separators=(',', ': ')))
 
+	print('Done!')
+
 def collect_audit_for_all_environments(save_directory):
 	configured_environments = run_selection.configured_environments()
 	for environment in configured_environments:

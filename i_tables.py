@@ -59,16 +59,20 @@ def _table_information(odbc, table, lib):
 def get_i_table_data(comparison_object):
 
 	i_connection_settings = {}
+	got_settings = False;
 
 	for config_file in comparison_object['config_files']:
 		if config_file['file'].endswith('.properties'):
 			for property in odbc_connection.i_connection_properties_required:
 				if property in config_file['dictionary']:
 					i_connection_settings[property] = config_file['dictionary'][property]
-					print('Found i connection settings in {!s}'.format(config_file['file']))
 				else:
-					print('Didn\'t find i connection settings in {!s}'.format(config_file['file']))
 					break
+			else:
+				got_settings = True;
+
+	if not got_settings:
+		raise Exception('Could not find connection settings for i')
 
 	with odbc_connect(i_connection_settings) as odbc:
 		for table in tables_to_retrieve:
