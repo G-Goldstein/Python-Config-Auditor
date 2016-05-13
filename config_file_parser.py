@@ -116,10 +116,6 @@ def create_dictionary_from_configuration_lines(lines):
 def create_dictionary_from_file_contents(file_contents):
 	return create_dictionary_from_configuration_lines(split_text_lines(file_contents))
 
-def file_contents(filepath):
-	with open(filepath, 'r') as file:
-		return file.read()
-
 def line_is_comment(line):
 	return line.startswith('#')
 
