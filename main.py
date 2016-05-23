@@ -32,7 +32,7 @@ def collect_audit_for_environment(environment, source_ip, source_shared_director
 	overview = {'Environment':environment, 'Date':timestamp.current_date(), 'Time':timestamp.current_time()}
 	comparison_object = {'overview':overview, 'config_files':[], 'database_tables':{}}
 
-	with smb_connector(source_ip, source_shared_directory, source_username, source_password) as source_connection:
+	with ftp_connector(source_ip, source_username, source_password) as source_connection:
 		for filepath in source_connection.all_files_recursively(source_path, config_file_parser.is_config_file, config_file_parser.is_not_excluded_directory):
 			print(filepath)
 			full_path = os.path.join(source_path, filepath)
@@ -45,7 +45,7 @@ def collect_audit_for_environment(environment, source_ip, source_shared_director
 	except:
 		print('Could not find connection settings for i')
 
-	with smb_connector(globals['audit_machine_ip'], globals['audit_machine_shared_directory'], globals['audit_machine_username'], globals['audit_machine_password']) as save_connection:
+	with ftp_connector(globals['audit_machine_ip'], globals['audit_machine_username'], globals['audit_machine_password']) as save_connection:
 		save_connection.write_file(save_file_path, json.dumps(comparison_object, sort_keys=True, indent=4, separators=(',', ': ')))
 
 	print('Done!')
