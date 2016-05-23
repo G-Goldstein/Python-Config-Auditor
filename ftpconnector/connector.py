@@ -9,8 +9,9 @@ class ftp_connector:
 		self.password = password
 
 	def __enter__(self):
-		self.connection = ftplib.FTP(ip)
-		self.connection.login(username, password)
+		self.connection = ftplib.FTP(self.ip)
+		self.connection.set_pasv(False)
+		self.connection.login(self.username, self.password)
 		return self
 
 	def __exit__(self, type, value, traceback):
@@ -20,25 +21,30 @@ class ftp_connector:
 		self.connection.quit()
 
 	def file_contents(self, path):
-		contents = ''
-		self.connection.retrlines("RETR {}".format(path), lambda s: contents += s + "\n")
-		return contents
+		with tempfile.NamedTemporaryFile() as file_obj:
+			self.connection.retrbinary(
+				"RETR {}".format(path),
+				lambda bytes: file_obj.write(bytes)
+			)
+			file_obj.seek(2)
+			contents = file_obj.read().decode('utf-8').translate({ord('\u0000'): None})
+			return contents
 
 	def all_files_recursively(self, full_path, file_filter, directory_filter, relative_path=''):
-		whats_here = self.connection.mlsd(full_path)
+		whats_here = self.connection.nlst(full_path)
 		for filename in whats_here:
-			file_path = os.path.join(full_path, filename)
-			file_relative_path = os.path.join(relative_path, filename)
+			file_path = filename
+			file_relative_path = os.path.join(relative_path, os.path.basename(filename))
 			if self.is_library(file_path):
 				if directory_filter(filename) and '.' not in filename:
 					yield from self.all_files_recursively(file_path, file_filter, directory_filter, file_relative_path)
 			elif file_filter(filename):
-				yield file_relative_path
+				yield os.path.normpath(file_relative_path)
 
 	def is_library(self, path):
 		try:
-			self.connection.retrlines("RETR {}".format(path), None)
-		except:
+			self.connection.retrbinary("RETR {}".format(path), lambda bytes: bytes)
+		except ftplib.error_perm:
 			return True
 		else:
 			return False

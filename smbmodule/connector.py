@@ -33,7 +33,7 @@ class smb_connector:
 				if directory_filter(file.filename) and '.' not in file.filename:
 					yield from self.all_files_recursively(file_path, file_filter, directory_filter, file_relative_path)
 			elif file_filter(file.filename):
-				yield file_relative_path
+				yield os.path.normpath(file_relative_path)
 
 	def write_file(self, path, contents):
 		with tempfile.NamedTemporaryFile() as file_obj:
