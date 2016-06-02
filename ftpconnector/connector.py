@@ -10,7 +10,7 @@ class ftp_connector:
 
 	def __enter__(self):
 		self.connection = ftplib.FTP(self.ip, timeout=100)
-		self.connection.set_pasv(False)
+		#self.connection.set_pasv(False)
 		self.connection.login(self.username, self.password)
 		return self
 
