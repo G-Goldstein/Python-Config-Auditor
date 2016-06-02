@@ -16,7 +16,6 @@ global_variables = ['audit_machine_ip',
 					'audit_machine_username',
 					'audit_machine_password']
 
-
 def set_globals():
 	for variable in global_variables:
 		try:
@@ -56,7 +55,6 @@ def collect_audit_for_all_environments(save_directory):
 	for environment in configured_environments:
 		collect_audit_for_environment(environment, configured_environments[environment], save_directory)
 		
-
 if __name__ == "__main__":
 	try:
 		environment = sys.argv[1]
