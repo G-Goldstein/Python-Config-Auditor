@@ -35,7 +35,7 @@ class ftp_connector:
 		whats_here = self.connection.nlst(full_path)
 		print(whats_here)
 		for filename in whats_here:
-			file_path = filename
+			file_path = os.path.join(full_path, filename)
 			file_relative_path = os.path.join(relative_path, os.path.basename(filename))
 			if self.is_library(file_path):
 				if directory_filter(filename) and '.' not in filename:
