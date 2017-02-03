@@ -31,9 +31,7 @@ class ftp_connector:
 			return contents
 
 	def all_files_recursively(self, full_path, file_filter, directory_filter, relative_path=''):
-		print(full_path)
 		whats_here = self.connection.nlst(full_path)
-		print(whats_here)
 		for filename in whats_here:
 			file_path = os.path.join(full_path, filename)
 			file_relative_path = os.path.join(relative_path, os.path.basename(filename))
